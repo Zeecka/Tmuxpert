@@ -1,0 +1,32 @@
+# Hot-reload development stack (no image build — source is bind-mounted).
+#
+#   docker compose -f docker-compose.dev.yml up          # start (foreground)
+#   docker compose -f docker-compose.dev.yml up -d       # start (background)
+#   docker compose -f docker-compose.dev.yml down        # stop
+#
+# The Vite dev server (HMR) serves the app on http://localhost:8972 with the
+# repo bind-mounted, so editing any file under src/ reloads the browser
+# automatically — no rebuild, no restart. Tmuxpert has no backend, so this is
+# the whole stack.
+services:
+  web:
+    image: node:22-alpine
+    container_name: tmuxpert-dev
+    working_dir: /app
+    # Install into the container-only node_modules volume (musl binaries for
+    # vite/esbuild/tailwind), then start Vite bound to all interfaces.
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 8972"
+    ports:
+      - "8972:8972"
+    environment:
+      # inotify is unreliable over bind mounts — poll so HMR still fires.
+      VITE_USE_POLLING: "true"
+    volumes:
+      - .:/app
+      - tmuxpert-node-modules:/app/node_modules
+    restart: unless-stopped
+
+volumes:
+  # Keeps the container's node_modules off the host bind-mount (avoids glibc vs
+  # musl native-binary clashes) and persists it between runs.
+  tmuxpert-node-modules:

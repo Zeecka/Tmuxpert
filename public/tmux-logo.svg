@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="6" fill="#0a0e14"/>
+  <!-- split panes -->
+  <rect x="4" y="4" width="10.5" height="18" rx="1.5" fill="none" stroke="#3ddc84" stroke-width="1.6"/>
+  <rect x="17.5" y="4" width="10.5" height="8" rx="1.5" fill="none" stroke="#2ba86a" stroke-width="1.6"/>
+  <rect x="17.5" y="14" width="10.5" height="8" rx="1.5" fill="none" stroke="#2ba86a" stroke-width="1.6"/>
+  <!-- green status bar with a blinking block cursor -->
+  <rect x="4" y="25" width="24" height="4" rx="1" fill="#3ddc84"/>
+  <rect x="6" y="26" width="2.5" height="2" fill="#0a0e14">
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.5;0.5;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+</svg>
