@@ -9,7 +9,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)](tsconfig.json)
 [![React](https://img.shields.io/badge/React-18-61dafb?logo=react&logoColor=black)](package.json)
 [![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)](vite.config.ts)
-[![Tests](https://img.shields.io/badge/tests-51%20passing-3ddc84)](tests)
+[![Tests](https://img.shields.io/badge/tests-63%20passing-3ddc84)](tests)
 [![Offline](https://img.shields.io/badge/works-100%25%20offline-ffc24b)](#-run-it)
 
 <img src="docs/media/home.png" width="85%" alt="Tmuxpert home: Nightglass UI, stats, and the Binding Belt">
@@ -37,6 +37,7 @@ challenge is scored VimGolf-style against a **par**.
 | 🤖 **Muxie, your buddy** | a mascot that idles, reacts while you type, and celebrates your wins |
 | ⌨️ **Binding Belt** | your growing, category-grouped collection of mastered bindings |
 | 🕹️ **Prefix Rush** | a 30-second reflex drill for prefix-then-key muscle memory |
+| 📄 **Cheatsheet** | a searchable, in-app tmux reference you can **download as a PDF** - generated fully offline with zero dependencies |
 | 🎨 **Customize** | spend coins on avatars, accent **themes** (the whole UI recolors live), animated backgrounds, and a tunable hero aura |
 | 💾 **Zero backend** | progress in `localStorage` with versioned migrations; fonts self-hosted, so it's **fully offline** |
 
@@ -45,12 +46,13 @@ challenge is scored VimGolf-style against a **par**.
 | | World | You learn | Boss |
 |--|-------|-----------|------|
 | 🟢 | **1 · Split** | the prefix epiphany · `%` `"` split · `o`/arrows move · `z` zoom · `x` kill | 🧩 The Workspace |
-| 🔵 | **2 · Windows** | `c` new · `,` rename · `n` `p` next/prev · `0-9` jump · `&` kill | none |
+| 🔵 | **2 · Windows** | `c` new · `,` rename · `n` `p` next/prev · `0-9` jump · `&` kill | 🪟 The Tab Wrangler |
 | 🟣 | **3 · Sessions & Copy** | `d` detach · `$` rename session · new session · `[` copy mode · search & `y` yank | 🆘 Session Rescue |
 | 🟠 | **4 · Rearrange** | `Space` next-layout · `{` `}` swap panes · `!` break-pane into a window | 🔧 The Rebuild |
 | 🔷 | **5 · Command Line** | the `:` prompt, e.g. `new-window`, `split-window`, `new-session`, `swap-window` | 🚀 Deploy Pipeline |
+| 🟪 | **6 · Power User** | `:resize-pane` · `]` paste the buffer · `:swap-window` reorder · scripting layouts from the prompt | 🎛️ The Orchestrator |
 
-**33 levels** (29 hand-authored challenges plus 4 multi-stage bosses), and **every par is
+**40 levels** (34 hand-authored challenges plus 6 multi-stage bosses), and **every par is
 machine-proven solvable** (see [Testing](#-testing-pars-are-proven-not-guessed)).
 
 <div align="center">
@@ -70,6 +72,14 @@ machine-proven solvable** (see [Testing](#-testing-pars-are-proven-not-guessed))
 <tr>
 <td align="center"><em>Prefix Rush: drill the combos against the clock</em></td>
 <td align="center"><em>Customize: spend coins on your look</em></td>
+</tr>
+<tr>
+<td><img src="docs/media/cheatsheet.png" alt="The searchable tmux cheatsheet with a Download PDF button"></td>
+<td><img src="docs/media/result.png" alt="Result screen with star rating and a retry-for-3-stars button"></td>
+</tr>
+<tr>
+<td align="center"><em>Cheatsheet: search it, or download the whole thing as a PDF</em></td>
+<td align="center"><em>Every solve is star-rated - fall short and retry for ⭐⭐⭐</em></td>
 </tr>
 </table>
 </div>
@@ -108,7 +118,7 @@ Source is bind-mounted, so edits under `src/` hot-reload the browser with no reb
 ## 🧪 Testing: pars are proven, not guessed
 
 ```bash
-npm test           # 51 vitest tests
+npm test           # 63 vitest tests
 npm run typecheck  # tsc across the project
 npm run build      # production build
 ```
@@ -117,6 +127,7 @@ npm run build      # production build
 |-------|--------------------|
 | `tests/content.test.ts` | ids unique · taught bindings resolve to the catalog · boss budgets sane |
 | `tests/par.test.ts` | **every challenge's par is achieved by a reference solution driven through the real engine**, including `:` commands, copy mode, and multi-stage bosses |
+| `tests/pdf.test.ts` | the offline cheatsheet PDF parses back cleanly - every cross-reference byte-offset lands on its object and each stream length is exact |
 | `tests/driver.ts` | a headless key-runner that feeds keystrokes into the same `reduce()` the UI uses |
 
 ## 🏗️ Architecture
@@ -136,10 +147,11 @@ src/
              verify.ts   composable goal predicates (paneCount, windowNamed)
              TmuxSurface.tsx  renders the pane tree + status bar, captures keys
   game/      types.ts (Challenge/Goal)  store.ts  xp.ts  sound.ts  runtime.ts  cosmetics.ts
-  content/   tier1.ts to tier5.ts  bosses.ts  tiers.ts  build.ts
+             cheatsheet.ts (reference data)  pdf.ts (dependency-free PDF writer)
+  content/   tier1.ts to tier6.ts  bosses.ts  tiers.ts  build.ts
   modes/     CampaignMode.tsx  ArcadeMode.tsx
-  ui/        Hud, WorldMap, ResultScreen, BindingBelt, HeroPanel, Shop, atoms
-tests/       driver.ts  par.test.ts (every par proven)  content.test.ts
+  ui/        Hud, WorldMap, ResultScreen, BindingBelt, HeroPanel, Shop, Cheatsheet, atoms
+tests/       driver.ts  par.test.ts (every par proven)  content.test.ts  pdf.test.ts
 ```
 
 ## ✍️ Adding a challenge
@@ -169,8 +181,9 @@ and `npm test` will *prove* the par is achievable. A `Goal` is either a `targetL
 
 - **3D/WebGL world layer:** an optional cel-shaded scene behind the smoked-glass panels.
 - **Accounts / verified-share backend:** optional sign-in plus cross-device sync.
-- **A config-focused tier 6:** `resize-pane` and `.tmux.conf` capstones. These need the
-  engine to model config/option effects, which it doesn't yet.
+- **`.tmux.conf` capstones:** the command prompt already accepts `set`/`bind`/`source-file`
+  as no-ops, but a config tier that *verifies option effects* needs the engine to model those
+  effects first. (Tier 6 already ships `resize-pane`, paste, and command-line scripting.)
 
 ## 🙏 Credits
 
