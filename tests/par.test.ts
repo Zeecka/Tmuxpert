@@ -17,6 +17,8 @@ const SOLUTIONS: Record<string, string> = {
   't1-capstone': 'C-b%C-b"',
   // Boss 1
   'b1-workspace': 'C-b%C-b"C-boC-b"C-bz',
+  // Boss (tier 2) - rename, jump-by-number + kill, new + rename
+  'b2-windows': 'C-b,editor<CR>C-b1C-b&C-bcC-b,logs<CR>',
   // Tier 2 - Windows
   't2-new-window': 'C-bc',
   't2-rename': 'C-b,editor<CR>',

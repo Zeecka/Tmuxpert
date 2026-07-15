@@ -1,16 +1,18 @@
 import type { Challenge } from '../game/types'
 import {
   activeSessionNamed,
+  activeWindowNamed,
   allOf,
   clipboardContains,
   layoutIs,
+  not,
   paneCount,
   paneZoomed,
   splitDirIs,
   windowCount,
   windowNamed,
 } from '../tmux/verify'
-import { single } from './build'
+import { single, withWindows } from './build'
 
 /**
  * Bosses - multi-stage challenges fought in the SAME session, with a keystroke
@@ -36,6 +38,34 @@ export const bosses: Challenge[] = [
     par: 10,
     keystrokeBudget: 22,
     hint: 'Prefix % (left|right), then prefix " to split the right pane. Prefix o back to the left, prefix " again - four panes. Finish with prefix z.',
+  },
+  {
+    // Tier-2 boss. (Boss ids are slugged by theme, not renumbered - b2-session-rescue
+    // predates this one and lives in tier 3; tiers.ts slots bosses by their `tier` field.)
+    id: 'b2-windows',
+    tier: 2,
+    kind: 'boss',
+    title: 'The Tab Wrangler',
+    brief: "A teammate left this session a mess. Tidy it up. First, rename this window (window 0, 'zsh') to 'editor' with prefix , .",
+    taughtCommands: ['rename-window', 'select-window', 'kill-window', 'new-window'],
+    start: withWindows(
+      [{ name: 'zsh', cmd: 'zsh' }, { name: 'scratch' }, { name: 'server', cmd: 'node' }],
+      { session: 'work' },
+    ),
+    goal: { predicate: activeWindowNamed('editor'), describe: "Window 0 renamed to 'editor'" },
+    stages: [
+      {
+        brief: "The 'scratch' window (window 1) is junk. Jump to it (prefix 1), then close it (prefix &).",
+        goal: { predicate: allOf(windowCount(2), not(windowNamed('scratch'))), describe: "The 'scratch' window is gone" },
+      },
+      {
+        brief: "Finally, add somewhere to tail logs: open a new window (prefix c) and name it 'logs' (prefix ,).",
+        goal: { predicate: allOf(windowNamed('logs'), windowCount(3)), describe: "A third window named 'logs' exists" },
+      },
+    ],
+    par: 22,
+    keystrokeBudget: 49,
+    hint: "Prefix , then editor, Enter. Then prefix 1 to jump to scratch and prefix & to close it. Then prefix c for a new window and prefix , to name it logs, Enter.",
   },
   {
     id: 'b2-session-rescue',

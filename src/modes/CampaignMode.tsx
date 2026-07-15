@@ -205,12 +205,12 @@ export function CampaignMode({ challenge, onPlay, onMap }: Props) {
           <div className="panel w-full max-w-md p-6 text-center">
             <p className="font-terminal text-3xl font-bold text-danger">REPELLED!</p>
             <p className="mt-2 text-sm text-ink-dim">
-              {challenge.title} shrugged off your {finalKs} keystrokes - the budget was {challenge.keystrokeBudget}. Every attempt
-              teaches the pattern.
+              {challenge.title} shrugged off your {finalKs} keystrokes - the budget was {challenge.keystrokeBudget}. Reload and
+              clear it in <b className="text-term">{challenge.par}</b> keystrokes or fewer to earn <span className="text-amber">★★★</span>.
             </p>
             <div className="mt-5 flex justify-center gap-3">
               <button onClick={replay} className="btn-primary rounded-xl px-5 py-2.5 font-bold">
-                ⟳ Retry
+                ⟳ Retry for 3 ★
               </button>
               <button
                 onClick={onMap}
