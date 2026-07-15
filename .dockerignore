@@ -1,0 +1,11 @@
+# Keep the build context small and reproducible - deps are installed fresh
+# inside the image from the lockfile, and dist/ is rebuilt there.
+node_modules
+dist
+.git
+.github
+*.tsbuildinfo
+*.local
+.DS_Store
+docker-compose.dev.yml
+docs
