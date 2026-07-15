@@ -10,6 +10,7 @@ import { tier2 } from './tier2'
 import { tier3 } from './tier3'
 import { tier4 } from './tier4'
 import { tier5 } from './tier5'
+import { tier6 } from './tier6'
 
 export const WORLDS: WorldMeta[] = [
   { tier: 1, name: 'Split', subtitle: 'Panes & the prefix', accent: 'var(--color-term)' },
@@ -17,6 +18,7 @@ export const WORLDS: WorldMeta[] = [
   { tier: 3, name: 'Sessions & Copy', subtitle: 'Detach, search, yank', accent: 'var(--color-magenta)' },
   { tier: 4, name: 'Rearrange', subtitle: 'Layouts, swap & break', accent: 'var(--color-amber)' },
   { tier: 5, name: 'Command Line', subtitle: 'The : prompt & scripting', accent: 'var(--color-cyan)' },
+  { tier: 6, name: 'Power User', subtitle: 'Resize, paste & scripting', accent: 'var(--color-magenta)' },
 ]
 
 export function worldMeta(tier: Tier): WorldMeta {
@@ -37,6 +39,8 @@ export const CHALLENGES: Challenge[] = [
   ...boss(4),
   ...tier5,
   ...boss(5),
+  ...tier6,
+  ...boss(6),
 ]
 
 export const CHALLENGE_BY_ID: Record<string, Challenge> = Object.fromEntries(CHALLENGES.map((c) => [c.id, c]))

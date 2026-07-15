@@ -52,6 +52,14 @@ const SOLUTIONS: Record<string, string> = {
   't5-capstone': 'C-b:neww -n api<CR>C-b:splitw -h<CR>',
   // Boss 4
   'b4-pipeline': 'C-b:neww -n build<CR>C-b:splitw -h<CR>',
+  // Tier 6 - Power user
+  't6-resize': 'C-b:resizep -R<CR>',
+  't6-paste': 'C-b]',
+  't6-reorder': 'C-b:swapw -t 0<CR>',
+  't6-cmd-split': 'C-b:splitw -h<CR>',
+  't6-capstone': 'C-b:splitw -h<CR>C-b:resizep -L<CR>',
+  // Boss (tier 6)
+  'b6-orchestrator': 'C-b:neww -n deploy<CR>C-b:splitw -h<CR>C-b:resizep -R<CR>',
 }
 
 describe('every challenge is solvable at par', () => {

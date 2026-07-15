@@ -61,6 +61,26 @@ export const activeWindowIndex = (i: number): GoalPredicate => (s) => {
   return windowIndex(sess, sess.activeWindowId) === i
 }
 
+/** The window at position `i` in the active session has this name (swap/reorder goals). */
+export const windowAtIndex = (i: number, name: string): GoalPredicate => (s) => activeSession(s).windows[i]?.name === name
+
+// ------------------------------------------------------------ layout / content ---
+
+/** The active window's top-level split has been resized away from the even 0.5
+ *  split - direction-agnostic, so it reads "you resized a pane" regardless of
+ *  which way. Resizing is command-only (`:resize-pane`), so only that satisfies it. */
+export const splitResized = (): GoalPredicate => (s) => {
+  const l = activeWindow(s).layout
+  return l.kind === 'split' && Math.abs(l.ratio - 0.5) > 0.01
+}
+
+/** The active pane's on-screen content includes this text (e.g. after a paste). */
+export const activePaneContains = (text: string): GoalPredicate => (s) => {
+  const w = activeWindow(s)
+  const p = leaves(w.layout).find((x) => x.id === w.activePaneId)
+  return (p?.content ?? []).join('\n').includes(text)
+}
+
 // ------------------------------------------------------------ sessions ---
 
 export const sessionCount = (n: number): GoalPredicate => (s) => s.sessions.length === n

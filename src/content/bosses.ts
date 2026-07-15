@@ -9,6 +9,7 @@ import {
   paneCount,
   paneZoomed,
   splitDirIs,
+  splitResized,
   windowCount,
   windowNamed,
 } from '../tmux/verify'
@@ -136,5 +137,28 @@ export const bosses: Challenge[] = [
     par: 28,
     keystrokeBudget: 62,
     hint: 'Prefix : then `neww -n build` (Enter). Then prefix : again and `splitw -h` (Enter). Everything tmux does, the command line does.',
+  },
+  {
+    id: 'b6-orchestrator',
+    tier: 6,
+    kind: 'boss',
+    title: 'The Orchestrator',
+    brief: 'Script an entire workspace from the command line. First: prefix : then  neww -n deploy  (Enter).',
+    taughtCommands: ['command-prompt', 'new-window', 'split-h', 'resize-pane'],
+    start: single({ session: 'ci', window: 'main', cmd: 'zsh' }),
+    goal: { predicate: windowNamed('deploy'), describe: "A 'deploy' window created from the prompt" },
+    stages: [
+      {
+        brief: 'Split that window left/right from the prompt:  splitw -h',
+        goal: { predicate: allOf(windowNamed('deploy'), paneCount(2)), describe: 'The deploy window has two panes' },
+      },
+      {
+        brief: 'Finally, size it - resize the pane from the prompt:  resizep -R',
+        goal: { predicate: splitResized(), describe: 'The pane has been resized' },
+      },
+    ],
+    par: 42,
+    keystrokeBudget: 93,
+    hint: 'Prefix : then `neww -n deploy` (Enter). Prefix : then `splitw -h` (Enter). Prefix : then `resizep -R` (Enter). The command line scripts everything.',
   },
 ]

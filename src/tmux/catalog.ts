@@ -51,6 +51,9 @@ export const BINDINGS: Binding[] = [
   // Tier 5 - Command line
   { id: 'command-prompt', keys: 'C-b :', label: 'Command prompt', category: 'Command', tier: 5 },
   { id: 'swap-window', keys: ':swap-window', label: 'Reorder windows', category: 'Command', tier: 5 },
+
+  // Tier 6 - Power user
+  { id: 'resize-pane', keys: 'C-b C-<arrow> / :resizep', label: 'Resize pane', category: 'Layout', tier: 6 },
 ]
 
 export const BINDING_BY_ID: Record<string, Binding> = Object.fromEntries(BINDINGS.map((b) => [b.id, b]))
