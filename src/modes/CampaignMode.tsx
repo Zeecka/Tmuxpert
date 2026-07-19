@@ -108,6 +108,33 @@ export function CampaignMode({ challenge, onPlay, onMap }: Props) {
     surfaceRef.current?.focus()
   }
 
+  // Focus safety net: a click on dead space (the page background, the brief, the
+  // hero panel) blurs the tmux surface to <body>, and from there every keystroke
+  // is silently swallowed — the level looks broken with no way back but clicking
+  // the surface. Whenever focus lands on nothing, hand it to the surface.
+  //
+  // Only the <body> case is reclaimed: focus that lands on a real element (a
+  // toolbar button, a modal's dialog panel) is left alone, so Tab-navigation and
+  // modal focus traps keep working. This also covers modal close, where the
+  // unmounting panel drops focus to <body>.
+  useEffect(() => {
+    let timer: number | undefined
+    const onFocusOut = () => {
+      window.clearTimeout(timer)
+      // Defer: at focusout time activeElement is still transitioning.
+      timer = window.setTimeout(() => {
+        if (!document.hasFocus()) return // window itself lost focus — not ours to fix
+        const active = document.activeElement
+        if (!active || active === document.body) surfaceRef.current?.focus()
+      }, 0)
+    }
+    document.addEventListener('focusout', onFocusOut)
+    return () => {
+      window.clearTimeout(timer)
+      document.removeEventListener('focusout', onFocusOut)
+    }
+  }, [])
+
   const overPar = keystrokes > challenge.par
 
   return (
@@ -120,9 +147,20 @@ export function CampaignMode({ challenge, onPlay, onMap }: Props) {
         <div className="flex flex-1 flex-col">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-widest" style={{ color: world.accent }}>
-                World {challenge.tier} · {challenge.title}
-              </p>
+              {isBoss ? (
+                <p className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.18em]">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-magenta/50 bg-magenta/15 px-2.5 py-0.5 text-magenta shadow-[0_0_16px_-6px_var(--color-magenta)]">
+                    <span aria-hidden>☠</span> Boss Fight
+                  </span>
+                  <span className="text-magenta/70">
+                    World {challenge.tier} · {challenge.title}
+                  </span>
+                </p>
+              ) : (
+                <p className="text-xs uppercase tracking-widest" style={{ color: world.accent }}>
+                  World {challenge.tier} · {challenge.title}
+                </p>
+              )}
               <h2 className="mt-1 text-lg text-ink">
                 <KeyedText text={activeStage.brief ?? challenge.brief} />
               </h2>
@@ -158,7 +196,11 @@ export function CampaignMode({ challenge, onPlay, onMap }: Props) {
 
           <div
             className="panel-glass relative mt-3 h-[46vh] min-h-[280px] max-h-[520px] overflow-hidden"
-            style={{ borderColor: `color-mix(in srgb, ${world.accent} 38%, var(--color-border))` }}
+            style={{
+              borderColor: isBoss
+                ? 'color-mix(in srgb, var(--color-magenta) 55%, var(--color-border))'
+                : `color-mix(in srgb, ${world.accent} 38%, var(--color-border))`,
+            }}
           >
             {/* Per-world abstract-art backdrop — consistent across every level. */}
             <WorldArt tier={challenge.tier} accent={world.accent} />
@@ -203,7 +245,7 @@ export function CampaignMode({ challenge, onPlay, onMap }: Props) {
               </button>
               <div className="ml-auto flex items-center gap-2">
                 <CheatsheetButton
-                  label="Commands"
+                  label="Cheatsheet"
                   keepSurfaceFocus
                   onClosed={() => surfaceRef.current?.focus()}
                   className="inline-flex items-center gap-1.5 rounded-full border border-border bg-panel-2/50 px-3.5 py-1.5 text-xs font-medium text-ink-dim transition-colors hover:border-magenta hover:text-magenta"

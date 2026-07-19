@@ -116,6 +116,7 @@ export default function App() {
   }
 
   const challenge = screen.name === 'play' ? CHALLENGE_BY_ID[screen.id] : undefined
+  const onBoss = challenge?.kind === 'boss'
 
   return (
     <MotionConfig reducedMotion="user">
@@ -127,6 +128,10 @@ export default function App() {
           <Stage3D />
         </Suspense>
       )}
+      {/* A per-context colour wash so each screen reads distinctly at a glance:
+          Quiz (cyan) ≠ Prefix Rush (amber), and any boss fight floods magenta so
+          you always know you're facing one. Sits above the background, below UI. */}
+      <ScreenTint screen={screen.name} boss={onBoss} />
       <div className="relative z-10 min-h-screen">
         {screen.name !== 'profile' && (
           <Hud
@@ -408,5 +413,32 @@ function Fallback({ onHome }: { onHome: () => void }) {
         ← back home
       </button>
     </div>
+  )
+}
+
+/**
+ * Full-screen colour wash that gives each context its own identity. A boss fight
+ * always wins (magenta) so it's unmistakable; otherwise Quiz (cyan) and Prefix
+ * Rush (amber) get distinct tints. Everything else stays on the equipped
+ * background untinted. Pointer-events-none, at z-0 above the background.
+ */
+function ScreenTint({ screen, boss }: { screen: string; boss: boolean }) {
+  const tint = boss
+    ? 'var(--color-magenta)'
+    : screen === 'quiz'
+      ? 'var(--color-cyan)'
+      : screen === 'arcade'
+        ? 'var(--color-amber)'
+        : null
+  if (!tint) return null
+  const strength = boss ? 24 : 16
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none fixed inset-0 z-0"
+      style={{
+        background: `radial-gradient(125% 85% at 50% -10%, color-mix(in srgb, ${tint} ${strength}%, transparent), transparent 62%)`,
+      }}
+    />
   )
 }

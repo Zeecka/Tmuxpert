@@ -24,7 +24,7 @@ export interface Cosmetic {
 
 /** Color themes - override the primary accent app-wide (UI + surface cursor). */
 export const THEMES: Cosmetic[] = [
-  { id: 'tmux-green', kind: 'theme', name: 'tmux Green', price: 0, accent: '#3ddc84', accentDim: '#2ba86a' },
+  { id: 'tmux-green', kind: 'theme', name: 'Phosphor Green', price: 0, accent: '#3ddc84', accentDim: '#2ba86a' },
   { id: 'nightglass', kind: 'theme', name: 'Nightglass', price: 0, accent: '#7c6bff', accentDim: '#5a4cd6' },
   { id: 'amber', kind: 'theme', name: 'Amber CRT', price: 60, accent: '#ffb454', accentDim: '#c98a3c' },
   { id: 'cyan', kind: 'theme', name: 'Ice Cyan', price: 60, accent: '#59c2ff', accentDim: '#3d87b3' },

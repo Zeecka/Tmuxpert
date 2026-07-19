@@ -21,14 +21,19 @@ services:
     working_dir: /app
     # Install into the container-only node_modules volume (musl binaries for
     # vite/esbuild/tailwind), then start Vite bound to all interfaces.
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 8972"
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 8974"
+    # Bound to loopback on 8974 to match the prod stack, so the host proxy for
+    # tmux.aperisolve.com reaches this dev server unchanged.
     ports:
-      - "8972:8972"
+      - "127.0.0.1:8974:8974"
     environment:
       # The API is a sibling service here, not localhost.
       VITE_API_TARGET: http://api:3001
       # inotify is unreliable over bind mounts - poll so HMR still fires.
       VITE_USE_POLLING: "true"
+      # Served behind the public HTTPS proxy for tmux.aperisolve.com: allow the
+      # host and point the HMR socket at wss://<host>:443 (see vite.config.ts).
+      VITE_PUBLIC_HOST: tmux.aperisolve.com
     volumes:
       - .:/app
       - tmuxpert-node-modules:/app/node_modules
