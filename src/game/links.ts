@@ -2,5 +2,5 @@
 export const DONATE_URL = 'https://github.com/sponsors/Zeecka'
 
 /** The source repo, as `owner/name` — used for the GitHub link and star count. */
-export const GITHUB_REPO = 'Zeecka/Tmuxpert'
+export const GITHUB_REPO = 'Zeecka/TmuxLegends'
 export const GITHUB_URL = `https://github.com/${GITHUB_REPO}`

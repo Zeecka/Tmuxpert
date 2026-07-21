@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # --- Stage 1: build the static bundle --------------------------------------
-# Tmuxpert is a pure static SPA (no backend), so we compile it once here and
+# TmuxLegends is a pure static SPA (no backend), so we compile it once here and
 # copy the resulting dist/ into a tiny nginx image below.
 FROM node:22-alpine AS build
 WORKDIR /app

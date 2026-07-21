@@ -1,5 +1,5 @@
 /**
- * The tmux binding catalog - the curriculum spine (analog of Vimersion's
+ * The tmux binding catalog - the curriculum spine (analog of VimLegends's
  * commands.ts). Every binding/command a challenge can teach is tagged with a
  * category and the tier that introduces it. Drives the "Binding Belt" mastery
  * UI and is the source of truth for `taughtCommands` ids in content.

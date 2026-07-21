@@ -32,7 +32,7 @@ const PROVIDERS = {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           Accept: 'application/vnd.github+json',
-          'User-Agent': 'tmuxpert-server', // required by the GitHub API
+          'User-Agent': 'tmuxlegends-server', // required by the GitHub API
         },
       })
       if (!res.ok) throw new Error(`github user endpoint returned ${res.status}`)

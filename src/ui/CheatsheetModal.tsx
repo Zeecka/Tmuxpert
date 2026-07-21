@@ -11,7 +11,7 @@ import { sfx } from '../game/sound'
  * reference around it), searchable, with the ones you can practise here flagged.
  * Downloadable as a PDF generated offline (see game/pdf.ts). Lazy-loaded
  * (default export) so the generator never weighs down the sync bundle.
- * Mirrors Vimersion's cheatsheet modal; ./Cheatsheet.tsx is the trigger.
+ * Mirrors VimLegends's cheatsheet modal; ./Cheatsheet.tsx is the trigger.
  *
  * Rendered through a PORTAL to <body>. The trigger lives in the HUD, whose
  * `backdrop-blur` makes the header a containing block for fixed descendants —
@@ -104,7 +104,7 @@ export default function CheatsheetModal({ onClose }: { onClose: () => void }) {
             )}
           </div>
           <span className="inline-flex items-center gap-1.5 text-xs text-ink-dim">
-            <span className="inline-block h-2 w-2 rounded-full bg-term" /> playable in Tmuxpert
+            <span className="inline-block h-2 w-2 rounded-full bg-term" /> playable in TmuxLegends
           </span>
         </div>
 
@@ -161,7 +161,7 @@ export default function CheatsheetModal({ onClose }: { onClose: () => void }) {
 }
 
 /** One binding. `sim` rows are playable here, and get the lit keycap treatment
- *  Vimersion gives a mastered command. */
+ *  VimLegends gives a mastered command. */
 function Row({ row }: { row: CheatRow }) {
   return (
     <div className="flex items-baseline gap-2.5">

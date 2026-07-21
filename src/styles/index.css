@@ -1,10 +1,10 @@
 @import 'tailwindcss';
 
-/* ---- Tmuxpert "Nightglass" design tokens (Tailwind v4 @theme) ----
-   Reuses Vimersion's Nightglass system: dark smoked-glass chrome over a
+/* ---- TmuxLegends "Nightglass" design tokens (Tailwind v4 @theme) ----
+   Reuses VimLegends's Nightglass system: dark smoked-glass chrome over a
    colorful world. Each token becomes a utility, e.g. --color-term ->
    bg-term / text-term / border-term. --color-term is the PRIMARY accent and
-   is set to tmux's signature status-bar green so Tmuxpert has its own
+   is set to tmux's signature status-bar green so TmuxLegends has its own
    identity while sharing the whole graphics system. */
 @theme {
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;

@@ -12,8 +12,8 @@ export interface LevelSceneProps {
  * Empty for now: no tmux level has a bespoke 3D scene yet, so play falls through
  * to the equipped backdrop (three/backdrops.tsx) like every other screen.
  * Register a scene here — and add its index to HAS_3D_SCENE — to give a level its
- * own world. Note Tmuxpert frames play with the surface on the RIGHT and the Hero
+ * own world. Note TmuxLegends frames play with the surface on the RIGHT and the Hero
  * panel on the LEFT, so a scene should keep its subject left or deep-background;
- * Vimersion's scenes assume the mirror image of that.
+ * VimLegends's scenes assume the mirror image of that.
  */
 export const SCENES_3D: Readonly<Record<number, ComponentType<LevelSceneProps>>> = {}

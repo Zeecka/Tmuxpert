@@ -3,10 +3,10 @@ import type { TmuxState } from '../tmux/model'
 export type Tier = 1 | 2 | 3 | 4 | 5 | 6
 
 /** A win condition: an exact layout string, or a predicate over the whole
- *  multiplexer state. Analog of Vimersion's Goal (targetText | predicate). */
+ *  multiplexer state. Analog of VimLegends's Goal (targetText | predicate). */
 export interface Goal {
   /** Win when the active window's serialized layout equals this (see
-   *  serializeLayout). The tmux analog of Vimersion's `targetText`. */
+   *  serializeLayout). The tmux analog of VimLegends's `targetText`. */
   targetLayout?: string
   /** Or win when this predicate is true. Checked after every keystroke. */
   predicate?: (s: TmuxState) => boolean
@@ -38,7 +38,7 @@ export interface Challenge {
   brief: Copy
   /** Binding ids (see catalog.ts) credited toward mastery on completion. */
   taughtCommands: string[]
-  /** The starting multiplexer state (replaces Vimersion's startText/startCursor). */
+  /** The starting multiplexer state (replaces VimLegends's startText/startCursor). */
   start: TmuxState
   goal: Goal
   /** Target keystroke count for a perfect (3-star) solve. */

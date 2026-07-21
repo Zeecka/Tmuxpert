@@ -7,7 +7,7 @@
 # The Vite dev server (HMR) serves the app on http://localhost:8972 with the
 # repo bind-mounted, so editing any file under src/ reloads the browser
 # automatically - no rebuild, no restart. The API runs with `node --watch`, so
-# server/ edits restart it too. Mirrors Vimersion's dev stack.
+# server/ edits restart it too. Mirrors VimLegends's dev stack.
 #
 # Prod (docker-compose.yml, :8974) is a SEPARATE project, so the two stacks run
 # side by side. Without these explicit names both default to the directory name

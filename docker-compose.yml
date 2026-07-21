@@ -3,7 +3,7 @@
 #   docker compose up -d --build   # http://localhost:8974
 #
 # Port 8974 is the one this project already publishes on; the dev stack owns 8972,
-# so unlike Vimersion (dev and prod share 8971) both can run side by side.
+# so unlike VimLegends (dev and prod share 8971) both can run side by side.
 #
 # The API is optional. Bring the stack up without OAuth credentials and the app
 # runs exactly as before - /api/config reports no providers, the account UI stays
@@ -11,15 +11,15 @@
 # server/.env.example) to switch accounts on.
 
 # Explicit project name. Both compose files would otherwise default to the
-# directory name ("tmuxpert") and, sharing a service key `api`, each `up` would
+# directory name ("tmuxlegends") and, sharing a service key `api`, each `up` would
 # recreate the other stack's container out from under it.
-name: tmuxpert
+name: tmuxlegends
 
 services:
-  tmuxpert:
+  tmuxlegends:
     build: .
-    image: tmuxpert:latest
-    container_name: tmuxpert-web
+    image: tmuxlegends:latest
+    container_name: tmuxlegends-web
     ports:
       - "127.0.0.1:8974:80"
     restart: unless-stopped
@@ -28,13 +28,13 @@ services:
 
   api:
     build: ./server
-    image: tmuxpert-api:latest
-    container_name: tmuxpert-api
+    image: tmuxlegends-api:latest
+    container_name: tmuxlegends-api
     restart: unless-stopped
     volumes:
       - tmuxpert-data:/data
     environment:
-      # No host port: nginx in the tmuxpert service proxies /api/ here.
+      # No host port: nginx in the tmuxlegends service proxies /api/ here.
       PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:-http://localhost:8974}
       SESSION_SECRET: ${SESSION_SECRET:-}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}

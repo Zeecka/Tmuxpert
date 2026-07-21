@@ -1,10 +1,10 @@
 /**
- * Tmuxpert's tmux state model - a pure, serializable multiplexer state tree.
+ * TmuxLegends's tmux state model - a pure, serializable multiplexer state tree.
  *
  * There is no "real tmux in the browser", so this is a faithful *simulation*:
  * sessions → windows → (a binary tree of) panes. Because it's pure data with
  * no DOM, the exact same reducer (engine.ts) drives both the live surface and
- * the headless par-proving tests. This is the analog of Vimersion's editor
+ * the headless par-proving tests. This is the analog of VimLegends's editor
  * buffer - here the "buffer" is the whole pane/window/session tree.
  */
 
@@ -182,7 +182,7 @@ export function paneRects(l: Layout, rect: Rect = { x: 0, y: 0, w: 1, h: 1 }): M
 /** Stable structural string for a layout, ignoring ratios and pane ids:
  *  a leaf is '.', a split is `dir[ab]`. e.g. two side-by-side panes → "h[..]",
  *  an editor over a split terminal row → "v[.h[..]]". Used by `layoutIs` goals
- *  (the tmux analog of Vimersion's `targetText`). */
+ *  (the tmux analog of VimLegends's `targetText`). */
 export function serializeLayout(l: Layout): string {
   if (l.kind === 'pane') return '.'
   return `${l.dir}[${serializeLayout(l.a)}${serializeLayout(l.b)}]`

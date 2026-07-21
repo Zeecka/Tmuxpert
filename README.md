@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/media/logo.png" width="72" alt="Tmuxpert logo">
+<img src="docs/media/logo.png" width="72" alt="TmuxLegends logo">
 
-# :Tmuxpert
+# :TmuxLegends
 
 **Learn tmux by playing.** Real prefix keys, real muscle memory, no config to memorize.
 
@@ -12,7 +12,7 @@
 [![Tests](https://img.shields.io/badge/tests-80%20passing-3ddc84)](tests)
 [![Offline](https://img.shields.io/badge/works-100%25%20offline-ffc24b)](#-run-it)
 
-<img src="docs/media/home.png" width="85%" alt="Tmuxpert home: Nightglass UI, stats, and the Binding Belt">
+<img src="docs/media/home.png" width="85%" alt="TmuxLegends home: Nightglass UI, stats, and the Binding Belt">
 
 </div>
 
@@ -88,8 +88,8 @@ machine-proven solvable** (see [Testing](#-testing-pars-are-proven-not-guessed))
 
 ## 💡 The one interesting design decision
 
-Tmuxpert is a sibling of [Vimersion](../vimersion), a Vim trainer that embeds a *real* Vim
-(`@replit/codemirror-vim`). There is no drop-in "real tmux in the browser", so Tmuxpert
+TmuxLegends is a sibling of [VimLegends](https://github.com/Zeecka/VimLegends), a Vim trainer that embeds a *real* Vim
+(`@replit/codemirror-vim`). There is no drop-in "real tmux in the browser", so TmuxLegends
 ships a **pure-TypeScript tmux simulator**: a state machine over `sessions > windows >
 panes` with tmux's modal, prefix-driven grammar (`normal > prefix > ...`), copy mode, and a
 `:` command prompt.
@@ -143,10 +143,10 @@ The optional backend has its own suite: `cd server && npm test` (55 tests, zero 
 
 ## 🏗️ Architecture
 
-Same stack as Vimersion: **React 18 + TypeScript + Vite + Zustand + Tailwind v4 +
+Same stack as VimLegends: **React 18 + TypeScript + Vite + Zustand + Tailwind v4 +
 framer-motion**, self-hosted fonts, Web-Audio synth SFX, the "Nightglass" design system
 (retheme accent to tmux green). The only subsystem that differs is the engine:
-Vimersion's `src/editor/` (CodeMirror) becomes `src/tmux/` (the simulator).
+VimLegends's `src/editor/` (CodeMirror) becomes `src/tmux/` (the simulator).
 
 ```
 src/
@@ -197,12 +197,12 @@ and `npm test` will *prove* the par is achievable. A `Goal` is either a `targetL
 (see `serializeLayout`) or a `predicate(state)` built from `src/tmux/verify.ts`. Bosses add
 `kind:'boss'`, `stages[]`, and a `keystrokeBudget` (roughly `ceil(par * 2.2)`).
 
-## 🧭 Deferred (structured to add later, exactly as Vimersion isolates them)
+## 🧭 Deferred (structured to add later, exactly as VimLegends isolates them)
 
 - **Per-level 3D scenes:** the stage, the shader backdrops and the registry all ship; no tmux
   level claims a bespoke world yet, so every screen falls through to the equipped backdrop.
   Register one in `src/three/sceneRegistry.ts` (and `sceneRegistry.meta.ts`) to add it - note
-  Tmuxpert frames play with the surface on the *right*, mirroring Vimersion.
+  TmuxLegends frames play with the surface on the *right*, mirroring VimLegends.
 - **`.tmux.conf` capstones:** the command prompt already accepts `set`/`bind`/`source-file`
   as no-ops, but a config tier that *verifies option effects* needs the engine to model those
   effects first. (Tier 6 already ships `resize-pane`, paste, and command-line scripting.)

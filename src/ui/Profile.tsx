@@ -77,7 +77,7 @@ export function Profile({ publicId, onPlay }: { publicId: string; onPlay: () => 
         )}
 
         <button onClick={onPlay} className="btn-primary mt-8 w-full rounded-xl px-6 py-3.5 text-lg font-bold">
-          ▶ Think you can beat it? Play Tmuxpert
+          ▶ Think you can beat it? Play TmuxLegends
         </button>
         <p className="mt-3 text-xs text-ink-dim">
           Learn tmux by playing — real prefix keys, real muscle memory. Free, no account needed.

@@ -1,6 +1,6 @@
 /**
  * World/tier assembly - the master challenge registry and unlock gating.
- * Mirrors Vimersion's tiers.ts: WORLDS metadata + a single CHALLENGES array in
+ * Mirrors VimLegends's tiers.ts: WORLDS metadata + a single CHALLENGES array in
  * play order + tierUnlocked().
  */
 import type { Challenge, ChallengeResult, Tier, WorldMeta } from '../game/types'

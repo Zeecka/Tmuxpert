@@ -33,7 +33,7 @@ type Phase = 'ready' | 'playing' | 'over'
 
 /** Prefix Rush - a 30-second reflex drill for the prefix-then-key combos. Fire
  *  the prefix (Ctrl-b) then the shown key as fast as you can. Analog of
- *  Vimersion's Motion Rush. */
+ *  VimLegends's Motion Rush. */
 export function ArcadeMode() {
   const best = useGame((s) => s.arcadeBest)
   const record = useGame((s) => s.recordArcade)

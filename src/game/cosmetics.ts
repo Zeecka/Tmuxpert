@@ -1,5 +1,5 @@
 /**
- * Cosmetics - the "Customize" economy, shared in design and code with Vimersion.
+ * Cosmetics - the "Customize" economy, shared in design and code with VimLegends.
  * Two kinds: a theme (the app-wide accent color) and a background (the animated
  * backdrop). Free items (price 0) are owned from the start; the rest are bought
  * with coins earned by playing.

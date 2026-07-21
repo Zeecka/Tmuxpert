@@ -39,7 +39,7 @@ const WIN_REVEAL_MS = 650
 const FAIL_REVEAL_MS = 500
 
 /**
- * The interactive tmux surface - the analog of Vimersion's VimEditor. Holds the
+ * The interactive tmux surface - the analog of VimLegends's VimEditor. Holds the
  * pure engine state, counts keystrokes (VimGolf-style, capture phase so nothing
  * escapes), advances ratcheted boss stages, enforces the boss budget, and renders
  * the pane tree + status bar. Remount (via a `key` on the parent) per challenge.
@@ -317,7 +317,7 @@ function StatusBar({ state }: { state: TmuxState }) {
       <div className="flex items-center gap-2">
         {state.mode === 'prefix' && <span className="rounded bg-black px-1.5 py-0.5 text-term">PREFIX ^B</span>}
         {state.mode === 'copy' && <span className="rounded bg-black px-1.5 py-0.5 text-cyan">COPY</span>}
-        <span className="text-black/60">{'·'} tmuxpert</span>
+        <span className="text-black/60">{'·'} tmuxlegends</span>
       </div>
     </div>
   )

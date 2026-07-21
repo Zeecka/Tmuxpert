@@ -1,6 +1,6 @@
 /**
  * Composable goal checkers for challenge authoring (the tmux analog of
- * Vimersion's src/game/verify.ts). Content files import these instead of
+ * VimLegends's src/game/verify.ts). Content files import these instead of
  * writing ad-hoc predicate logic - keeps challenges declarative
  * (content-as-data). All checkers are pure factories returning a GoalPredicate;
  * combine with allOf/anyOf/not.

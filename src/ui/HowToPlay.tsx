@@ -9,7 +9,7 @@ import { Emoji } from './Emoji'
  * app was missing before you're dropped into a live multiplexer. Lazy-loaded
  * (default export) so it never weighs on the sync bundle. Auto-shown once to
  * brand-new players (see App's Home), and always reachable from the Home button.
- * Mirrors Vimersion's primer.
+ * Mirrors VimLegends's primer.
  *
  * Portalled to <body>: it auto-shows while <motion.main> is still animating its
  * transform, and a transformed ancestor is a containing block for `fixed`
@@ -85,7 +85,7 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
-        aria-label="How to play Tmuxpert"
+        aria-label="How to play TmuxLegends"
         className="panel flex max-h-[88vh] w-full max-w-lg flex-col overflow-hidden outline-none"
         initial={{ scale: 0.94, y: 14, opacity: 0 }}
         animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -108,7 +108,7 @@ export default function HowToPlay({ onClose }: { onClose: () => void }) {
 
         <div className="space-y-3 overflow-y-auto px-5 py-4">
           <p className="text-sm text-ink-dim">
-            Tmuxpert teaches tmux in a <b className="text-ink">simulated multiplexer</b> — the keys transfer straight to
+            TmuxLegends teaches tmux in a <b className="text-ink">simulated multiplexer</b> — the keys transfer straight to
             your terminal, with nothing to install and no config to memorize. Sixty seconds and you&rsquo;re playing:
           </p>
           {steps.map((s, i) => (

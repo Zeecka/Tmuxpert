@@ -122,8 +122,8 @@ function layout(sections: CheatSection[]): Page[] {
   }
   const drawFooter = () => {
     page.rect(MARGIN, BOTTOM + 4, PAGE_W - MARGIN * 2, 0.6, HAIRLINE)
-    page.text(MARGIN, BOTTOM - 5, 'Tmuxpert  -  learn tmux by playing', F.obl, 8, GRAY)
-    page.text(PAGE_W - MARGIN - heltW('* = playable in Tmuxpert', 8), BOTTOM - 5, '* = playable in Tmuxpert', F.reg, 8, GRAY)
+    page.text(MARGIN, BOTTOM - 5, 'TmuxLegends  -  learn tmux by playing', F.obl, 8, GRAY)
+    page.text(PAGE_W - MARGIN - heltW('* = playable in TmuxLegends', 8), BOTTOM - 5, '* = playable in TmuxLegends', F.reg, 8, GRAY)
   }
 
   const newPage = () => {

@@ -1,7 +1,7 @@
 /**
  * Headless solution driver - feeds a keystroke string through the pure reducer
  * and reports whether a challenge's (possibly multi-stage, ratcheted) goals are
- * cleared. The tmux analog of Vimersion's tests/driver.ts, but far simpler:
+ * cleared. The tmux analog of VimLegends's tests/driver.ts, but far simpler:
  * the engine has no DOM, so there are no jsdom shims.
  *
  * Solution string grammar (no decorative whitespace - every char counts):

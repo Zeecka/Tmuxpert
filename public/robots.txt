@@ -1,5 +1,5 @@
-# Tmuxpert — a free, static web game. Everything is public and crawlable.
+# TmuxLegends — a free, static web game. Everything is public and crawlable.
 User-agent: *
 Allow: /
 
-Sitemap: https://zeecka.github.io/Tmuxpert/sitemap.xml
+Sitemap: https://zeecka.github.io/TmuxLegends/sitemap.xml

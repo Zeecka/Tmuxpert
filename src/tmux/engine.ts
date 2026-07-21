@@ -9,7 +9,7 @@
  *   rename-window / rename-session - a text prompt
  *
  * No DOM here: the same reducer drives the live surface and the headless
- * par-proving tests. This is the analog of Vimersion's real vim keymap.
+ * par-proving tests. This is the analog of VimLegends's real vim keymap.
  */
 import { PREFIX, type Mode, type TmuxState } from './model'
 import { runCommand } from './commands'

@@ -17,7 +17,7 @@ import { sfx } from '../game/sound'
  * The persistent top bar — on every screen, home included. Carries the main
  * shortcuts (customize / maps / cheatsheet / share / day streak) plus coins, XP,
  * sound and the optional account control. (Graphics quality is auto-detected per
- * device; there is no manual toggle.) Mirrors Vimersion's HUD.
+ * device; there is no manual toggle.) Mirrors VimLegends's HUD.
  */
 export function Hud({
   onHome,
@@ -79,7 +79,7 @@ export function Hud({
       >
         <PlayerAvatar size={22} />
         <span className="hidden font-terminal text-xl font-bold tracking-tight text-term glow-term transition-opacity hover:opacity-80 sm:inline">
-          :Tmuxpert
+          :TmuxLegends
         </span>
       </button>
 

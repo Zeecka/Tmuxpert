@@ -4,7 +4,7 @@
  * in-app cheatsheet modal (src/ui/CheatsheetModal.tsx) and the offline PDF
  * export (src/game/pdf.ts), so the two can never drift.
  *
- * Rows tagged `sim: true` are things you can actually practise inside Tmuxpert's
+ * Rows tagged `sim: true` are things you can actually practise inside TmuxLegends's
  * simulator today; untagged rows are real-tmux reference the trainer doesn't
  * (yet) simulate. Keys assume tmux's default prefix, C-b.
  */
@@ -17,7 +17,7 @@ export interface CheatRow {
   keys: string
   /** What it does, one terse line. */
   desc: string
-  /** Playable in the Tmuxpert simulator right now. */
+  /** Playable in the TmuxLegends simulator right now. */
   sim?: boolean
 }
 

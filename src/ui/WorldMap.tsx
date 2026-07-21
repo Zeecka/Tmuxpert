@@ -4,7 +4,7 @@ import { StarRow } from './atoms'
 import { Emoji } from './Emoji'
 import { sfx } from '../game/sound'
 
-/** The campaign map. Same design as Vimersion's, with tmux's worlds and bosses. */
+/** The campaign map. Same design as VimLegends's, with tmux's worlds and bosses. */
 export function WorldMap({ onPlay }: { onPlay: (id: string) => void }) {
   const completed = useGame((s) => s.completed)
 

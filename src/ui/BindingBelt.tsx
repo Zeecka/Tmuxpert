@@ -4,7 +4,7 @@ import { MASTERY_THRESHOLD, useGame } from '../game/store'
 /**
  * The Binding Belt - every tmux binding the game teaches, grouped by category,
  * lighting up as you master it (>= MASTERY_THRESHOLD reps). The tmux analog of
- * Vimersion's Command Belt, and deliberately the same design: a compact row of
+ * VimLegends's Command Belt, and deliberately the same design: a compact row of
  * keycaps per category, so the belt reads as one collection at a glance rather
  * than a wall of chips. (Octalysis "Ownership" drive.)
  */
