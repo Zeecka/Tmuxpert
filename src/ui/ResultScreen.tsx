@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { KeyCap, StarRow } from './atoms'
+import { KeyCap, KeyedText, StarRow } from './atoms'
 import { Emoji } from './Emoji'
 import { sfx } from '../game/sound'
 import { BINDINGS, BINDING_BY_ID } from '../tmux/catalog'
 import { useGame, MASTERY_THRESHOLD, type CompleteOutcome } from '../game/store'
+import { useT } from '../game/i18n'
 import { levelFromXp } from '../game/xp'
 import { shareScore } from '../game/share'
 import { CHALLENGES } from '../content/tiers'
@@ -27,6 +28,7 @@ export function ResultScreen({ outcome, keystrokes, par, boss, hasNext, nextLabe
   const completed = useGame((s) => s.completed)
   const mastery = useGame((s) => s.mastery)
   const coins = useGame((s) => s.coins)
+  const t = useT()
   const [shareMsg, setShareMsg] = useState<string | null>(null)
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export function ResultScreen({ outcome, keystrokes, par, boss, hasNext, nextLabe
       mastered,
       coins,
     })
-    setShareMsg(res === 'shared' ? 'Shared! 🎉' : res === 'copied' ? 'Copied to clipboard!' : 'Could not share')
+    setShareMsg(res === 'shared' ? t('result.shared') : res === 'copied' ? t('result.copied') : t('result.shareFailed'))
     window.setTimeout(() => setShareMsg(null), 2500)
   }
 
@@ -81,7 +83,7 @@ export function ResultScreen({ outcome, keystrokes, par, boss, hasNext, nextLabe
         transition={{ type: 'spring', stiffness: 220, damping: 20 }}
       >
         <p className="title-gradient font-terminal text-4xl font-bold">
-          {boss ? 'BOSS DEFEATED!' : outcome.isPerfect ? 'PERFECT!' : 'SOLVED!'}
+          {boss ? t('result.bossDefeated') : outcome.isPerfect ? t('result.perfect') : t('result.solved')}
         </p>
 
         <div className="mt-4 flex justify-center">
@@ -90,18 +92,14 @@ export function ResultScreen({ outcome, keystrokes, par, boss, hasNext, nextLabe
 
         <div className="mt-5 flex items-center justify-center gap-6 text-sm">
           <span className="text-ink-dim">
-            keystrokes <b className="text-ink">{keystrokes}</b>
+            {t('result.keystrokesLabel')} <b className="text-ink">{keystrokes}</b>
           </span>
           <span className="text-ink-dim">
-            goal <b className="text-ink">{par}</b>
+            {t('result.goalLabel')} <b className="text-ink">{par}</b>
           </span>
         </div>
 
-        {canImprove && (
-          <p className="mt-3 text-xs text-ink-dim">
-            solve in <b className="text-term">{par}</b> keystrokes or fewer to earn <span className="text-amber">★★★</span>
-          </p>
-        )}
+        {canImprove && <p className="mt-3 text-xs text-ink-dim">{t('result.improveHint', { par })}</p>}
 
         <div className="mt-4 flex items-center justify-center gap-6">
           {outcome.xpGained > 0 && (
@@ -127,18 +125,18 @@ export function ResultScreen({ outcome, keystrokes, par, boss, hasNext, nextLabe
           )}
         </div>
         {outcome.xpGained === 0 && outcome.coinsGained === 0 && (
-          <p className="mt-4 text-xs text-ink-dim">already mastered - replaying for practice</p>
+          <p className="mt-4 text-xs text-ink-dim">{t('result.alreadyMastered')}</p>
         )}
 
         {outcome.leveledUp && (
           <motion.p className="mt-2 text-cyan" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
-            ▲ LEVEL UP → {outcome.newLevel}
+            ▲ {t('result.levelUp', { n: outcome.newLevel })}
           </motion.p>
         )}
 
         {outcome.newlyMastered.length > 0 && (
           <div className="mt-4 text-sm">
-            <p className="text-ink-dim">binding mastered:</p>
+            <p className="text-ink-dim">{t('result.commandMastered')}</p>
             <div className="mt-1 flex flex-wrap justify-center gap-2">
               {outcome.newlyMastered.map((id) => (
                 <KeyCap key={id}>{BINDING_BY_ID[id]?.keys ?? id}</KeyCap>
@@ -156,13 +154,13 @@ export function ResultScreen({ outcome, keystrokes, par, boss, hasNext, nextLabe
                 : 'rounded border border-border px-4 py-2 text-sm text-ink-dim transition-colors hover:border-term hover:text-term'
             }
           >
-            {canImprove ? '↻ Retry for 3 ★' : '↻ Replay'}
+            ↻ {canImprove ? t('result.retryFor3') : t('result.replay')}
           </button>
           <button
             onClick={onMap}
             className="rounded border border-border px-4 py-2 text-sm text-ink-dim transition-colors hover:border-term hover:text-term"
           >
-            ⊞ Map
+            ⊞ {t('result.map')}
           </button>
           {hasNext && (
             <button onClick={onNext} className="rounded bg-term px-5 py-2 text-sm font-bold text-bg transition-transform hover:scale-105">
@@ -172,7 +170,7 @@ export function ResultScreen({ outcome, keystrokes, par, boss, hasNext, nextLabe
         </div>
         {hasNext && (
           <p className="mt-3 text-[11px] text-ink-dim">
-            press <KeyCap>Enter</KeyCap> to continue
+            <KeyedText text={t('result.pressEnter')} />
           </p>
         )}
 
@@ -180,7 +178,7 @@ export function ResultScreen({ outcome, keystrokes, par, boss, hasNext, nextLabe
           onClick={onShare}
           className="mx-auto mt-4 inline-flex items-center gap-1.5 text-xs text-cyan underline decoration-dotted underline-offset-4 hover:opacity-80"
         >
-          <Emoji name="rocket" size={14} /> share my score
+          <Emoji name="rocket" size={14} /> {t('result.shareMyScore')}
         </button>
         {shareMsg && <p className="mt-1.5 text-xs text-term">{shareMsg}</p>}
       </motion.div>

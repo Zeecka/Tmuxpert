@@ -1,5 +1,6 @@
 import { WORLDS, challengesForTier, tierUnlocked } from '../content/tiers'
 import { useGame } from '../game/store'
+import { useT } from '../game/i18n'
 import { StarRow } from './atoms'
 import { Emoji } from './Emoji'
 import { sfx } from '../game/sound'
@@ -7,11 +8,12 @@ import { sfx } from '../game/sound'
 /** The campaign map. Same design as VimLegends's, with tmux's worlds and bosses. */
 export function WorldMap({ onPlay }: { onPlay: (id: string) => void }) {
   const completed = useGame((s) => s.completed)
+  const t = useT()
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h2 className="font-terminal text-4xl text-term glow-term">Campaign</h2>
-      <p className="mt-1 text-ink-dim">Clear a world to unlock the next. Fewer keystrokes = more stars.</p>
+      <h2 className="font-terminal text-4xl text-term glow-term">{t('map.title')}</h2>
+      <p className="mt-1 text-ink-dim">{t('map.subtitle')}</p>
 
       <div className="mt-8 space-y-6">
         {WORLDS.map((w) => {
@@ -28,21 +30,26 @@ export function WorldMap({ onPlay }: { onPlay: (id: string) => void }) {
                     className="font-terminal text-2xl"
                     style={{ color: playable ? w.accent : 'var(--color-ink-dim)' }}
                   >
-                    World {w.tier} · {w.name}
+                    {t('map.worldLabel', {
+                      n: w.tier,
+                      name: t(`content.world.${w.tier}.name`, undefined, w.name),
+                    })}
                   </h3>
-                  <p className="text-sm text-ink-dim">{w.subtitle}</p>
+                  <p className="text-sm text-ink-dim">
+                    {t(`content.world.${w.tier}.subtitle`, undefined, w.subtitle)}
+                  </p>
                 </div>
                 {!hasContent ? (
                   <span className="rounded border border-border px-2 py-1 text-[10px] uppercase tracking-widest text-ink-dim">
-                    Coming soon
+                    {t('map.comingSoon')}
                   </span>
                 ) : cleared ? (
                   <span className="rounded border border-term px-2 py-1 text-[10px] uppercase tracking-widest text-term">
-                    ✓ Cleared
+                    ✓ {t('map.cleared')}
                   </span>
                 ) : !worldUnlocked ? (
                   <span className="flex items-center gap-1.5 rounded border border-border px-2 py-1 text-[10px] uppercase tracking-widest text-ink-dim">
-                    <Emoji name="lock" size={11} /> Locked
+                    <Emoji name="lock" size={11} /> {t('map.locked')}
                   </span>
                 ) : null}
               </div>
@@ -76,7 +83,7 @@ export function WorldMap({ onPlay }: { onPlay: (id: string) => void }) {
                         </div>
                         <p className={`mt-1.5 text-sm font-medium ${isBoss ? 'text-magenta' : 'text-ink'}`}>
                           {isBoss && <span className="mr-1">☠</span>}
-                          {c.title}
+                          {t(`content.${c.id}.title`, undefined, c.title)}
                         </p>
                       </button>
                     )

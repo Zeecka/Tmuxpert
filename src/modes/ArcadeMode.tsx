@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { KeyCap } from '../ui/atoms'
+import { KeyCap, KeyedText } from '../ui/atoms'
 import { Emoji } from '../ui/Emoji'
 import { MODIFIER_KEYS, isPrefix, keyFromEvent } from '../tmux/engine'
 import { sfx } from '../game/sound'
 import { useGame } from '../game/store'
+import { useT } from '../game/i18n'
 
 const DURATION = 30
 
@@ -37,6 +38,7 @@ type Phase = 'ready' | 'playing' | 'over'
 export function ArcadeMode() {
   const best = useGame((s) => s.arcadeBest)
   const record = useGame((s) => s.recordArcade)
+  const t = useT()
 
   const [phase, setPhase] = useState<Phase>('ready')
   const [score, setScore] = useState(0)
@@ -153,9 +155,9 @@ export function ArcadeMode() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="text-center">
-        <h2 className="title-gradient font-terminal text-4xl font-bold">Prefix Rush</h2>
+        <h2 className="title-gradient font-terminal text-4xl font-bold">{t('arcade.title')}</h2>
         <p className="mt-2 text-sm text-ink-dim">
-          {DURATION} seconds. Fire the <KeyCap>C-b</KeyCap> prefix, then the shown key - as fast as you can.
+          <KeyedText text={t('arcade.tagline', { sec: DURATION })} />
         </p>
       </div>
 
@@ -163,10 +165,10 @@ export function ArcadeMode() {
         <div className="panel mt-8 flex flex-col items-center gap-4 p-8 text-center">
           <Emoji name="bolt" size={48} />
           <p className="text-ink-dim">
-            Best: <span className="font-terminal text-xl text-term">{best}</span>
+            {t('arcade.best')}: <span className="font-terminal text-xl text-term">{best}</span>
           </p>
           <button onClick={start} className="btn-primary rounded-xl px-6 py-3 font-bold">
-            Start drill
+            {t('arcade.startDrill')}
           </button>
         </div>
       )}
@@ -175,14 +177,14 @@ export function ArcadeMode() {
         <div className="mt-6">
           <div className="flex items-center justify-between text-sm">
             <span className="text-ink-dim">
-              SCORE <span className="font-terminal text-xl text-ink">{score}</span>
+              {t('arcade.score')} <span className="font-terminal text-xl text-ink">{score}</span>
             </span>
             <span className="text-ink-dim">
-              COMBO <span className="font-terminal text-xl text-magenta">×{mult}</span>
+              {t('arcade.combo')} <span className="font-terminal text-xl text-magenta">×{mult}</span>
               {combo > 0 && <span className="ml-1 text-xs text-ink-dim">({combo})</span>}
             </span>
             <span className="text-ink-dim tabular-nums">
-              TIME <span className="font-terminal text-xl text-amber">{timeLeft.toFixed(1)}</span>
+              {t('arcade.time')} <span className="font-terminal text-xl text-amber">{timeLeft.toFixed(1)}</span>
             </span>
           </div>
           <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-panel-2">
@@ -198,25 +200,27 @@ export function ArcadeMode() {
               flash === 'hit' ? 'border-term' : flash === 'miss' ? 'border-danger' : ''
             }`}
           >
-            <p className="text-lg text-ink-dim">{drill.label}</p>
+            <p className="text-lg text-ink-dim">{t(`arcade.drill.${drill.binding}`, undefined, drill.label)}</p>
             <div className="flex items-center gap-2">
               <KeyCap>C-b</KeyCap>
-              <span className="text-ink-dim">then</span>
+              <span className="text-ink-dim">{t('arcade.then')}</span>
               <KeyCap>{drill.display}</KeyCap>
             </div>
-            <p className={`text-xs ${armed ? 'text-term' : 'text-ink-dim/60'}`}>{armed ? 'prefix armed - press the key!' : 'press the prefix first'}</p>
+            <p className={`text-xs ${armed ? 'text-term' : 'text-ink-dim/60'}`}>
+              {armed ? t('arcade.armed') : t('arcade.pressPrefix')}
+            </p>
           </motion.div>
         </div>
       )}
 
       {phase === 'over' && result && (
         <div className="panel mt-8 flex flex-col items-center gap-3 p-8 text-center">
-          <p className="title-gradient font-terminal text-3xl font-bold">TIME!</p>
+          <p className="title-gradient font-terminal text-3xl font-bold">{t('arcade.timeUp')}</p>
           <p className="font-terminal text-5xl text-term">{result.score}</p>
           {result.isNewBest ? (
-            <p className="text-amber glow-amber">★ New best!</p>
+            <p className="text-amber glow-amber">★ {t('arcade.newBest')}</p>
           ) : (
-            <p className="text-sm text-ink-dim">best {best}</p>
+            <p className="text-sm text-ink-dim">{t('arcade.bestOver', { n: best })}</p>
           )}
           {result.coinsGained > 0 && (
             <p className="inline-flex items-center gap-1.5 text-amber">
@@ -224,7 +228,7 @@ export function ArcadeMode() {
             </p>
           )}
           <button onClick={start} className="btn-primary mt-2 rounded-xl px-6 py-3 font-bold">
-            Go again
+            {t('arcade.goAgain')}
           </button>
         </div>
       )}

@@ -19,6 +19,8 @@ export interface CheatRow {
   desc: string
   /** Playable in the TmuxLegends simulator right now. */
   sim?: boolean
+  /** Stable translation id (`<sectionIndex>.<rowIndex>`), assigned below. */
+  tid?: string
 }
 
 export interface CheatSection {
@@ -26,6 +28,8 @@ export interface CheatSection {
   /** Optional one-line intro shown under the section heading. */
   blurb?: string
   rows: CheatRow[]
+  /** Stable translation slug (the section index), assigned below. */
+  slug?: string
 }
 
 export const CHEATSHEET: CheatSection[] = [
@@ -121,6 +125,16 @@ export const CHEATSHEET: CheatSection[] = [
     ],
   },
 ]
+
+// Stable translation ids so the in-app modal can localize titles/blurbs/rows
+// (the offline PDF stays English). Index-based, so they never drift as long as
+// the array order is preserved.
+CHEATSHEET.forEach((sec, si) => {
+  sec.slug = String(si)
+  sec.rows.forEach((row, ri) => {
+    row.tid = `${si}.${ri}`
+  })
+})
 
 /** Flat count of everything documented - handy for headers/badges. */
 export const CHEAT_ROW_COUNT = CHEATSHEET.reduce((n, s) => n + s.rows.length, 0)

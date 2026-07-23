@@ -1,5 +1,6 @@
 import { BINDINGS, CATEGORY_ORDER, type Binding } from '../tmux/catalog'
 import { MASTERY_THRESHOLD, useGame } from '../game/store'
+import { useT } from '../game/i18n'
 
 /**
  * The Binding Belt - every tmux binding the game teaches, grouped by category,
@@ -10,11 +11,12 @@ import { MASTERY_THRESHOLD, useGame } from '../game/store'
  */
 export function BindingBelt() {
   const mastery = useGame((s) => s.mastery)
+  const t = useT()
   const mastered = BINDINGS.filter((b) => (mastery[b.id] ?? 0) >= MASTERY_THRESHOLD).length
 
   const groups = CATEGORY_ORDER.map((cat) => ({
     key: cat,
-    label: cat,
+    label: t(`belt.cat.${cat}`, undefined, cat),
     bindings: BINDINGS.filter((b) => b.category === cat),
   })).filter((g) => g.bindings.length > 0)
 
@@ -22,10 +24,11 @@ export function BindingBelt() {
     const reps = mastery[b.id] ?? 0
     const isMastered = reps >= MASTERY_THRESHOLD
     const started = reps > 0
+    const label = t(`binding.${b.id}.label`, undefined, b.label)
     return (
       <span
         key={b.id}
-        title={`${b.keys} — ${b.label}${reps ? ` (${reps})` : ''}`}
+        title={`${b.keys} — ${label}${reps ? ` (${reps})` : ''}`}
         className={`keycap ${isMastered ? 'border-term text-term' : started ? 'text-ink' : 'opacity-35'}`}
         style={isMastered ? { boxShadow: '0 0 8px color-mix(in srgb, var(--color-term) 40%, transparent)' } : undefined}
       >
@@ -37,9 +40,9 @@ export function BindingBelt() {
   return (
     <div className="panel p-4">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="font-terminal text-xl font-semibold text-term">Binding Belt</h3>
+        <h3 className="font-terminal text-xl font-semibold text-term">{t('belt.title')}</h3>
         <span className="text-xs tabular-nums text-ink-dim">
-          {mastered}/{BINDINGS.length} mastered
+          {t('belt.mastered', { n: mastered, total: BINDINGS.length })}
         </span>
       </div>
       <div className="space-y-2.5">

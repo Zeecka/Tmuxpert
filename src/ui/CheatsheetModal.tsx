@@ -5,6 +5,7 @@ import { CHEAT_ROW_COUNT, PREFIX_LABEL, filterCheatsheet, type CheatRow } from '
 import { downloadCheatsheetPdf } from '../game/pdf'
 import { Emoji } from './Emoji'
 import { sfx } from '../game/sound'
+import { useT } from '../game/i18n'
 
 /**
  * The in-app tmux cheatsheet: every binding the game teaches (plus the real-tmux
@@ -20,6 +21,7 @@ import { sfx } from '../game/sound'
  */
 export default function CheatsheetModal({ onClose }: { onClose: () => void }) {
   const panelRef = useRef<HTMLDivElement>(null)
+  const t = useT()
   const [flash, setFlash] = useState<string | null>(null)
   const [q, setQ] = useState('')
   const sections = useMemo(() => filterCheatsheet(q), [q])
@@ -55,7 +57,7 @@ export default function CheatsheetModal({ onClose }: { onClose: () => void }) {
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
-        aria-label="tmux cheatsheet"
+        aria-label={t('cheatsheet.dialogLabel')}
         className="panel flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden outline-none"
         initial={{ scale: 0.94, y: 14, opacity: 0 }}
         animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -67,16 +69,15 @@ export default function CheatsheetModal({ onClose }: { onClose: () => void }) {
           <div className="flex items-center gap-2.5">
             <Emoji name="keyboard" size={20} />
             <div>
-              <h2 className="font-terminal text-xl font-bold text-term">tmux Cheatsheet</h2>
+              <h2 className="font-terminal text-xl font-bold text-term">{t('cheatsheet.title')}</h2>
               <p className="text-[11px] text-ink-dim">
-                {CHEAT_ROW_COUNT} entries · default prefix <span className="text-term">{PREFIX_LABEL}</span> — press it,
-                release, then the key
+                {t('cheatsheet.summary', { n: CHEAT_ROW_COUNT, prefix: PREFIX_LABEL })}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            aria-label="Close cheatsheet"
+            aria-label={t('cheatsheet.close')}
             className="rounded-full border border-border px-2.5 py-1 text-sm text-ink-dim transition-colors hover:border-danger hover:text-danger"
           >
             ✕
@@ -89,14 +90,14 @@ export default function CheatsheetModal({ onClose }: { onClose: () => void }) {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Filter bindings..."
-              aria-label="Filter bindings"
+              placeholder={t('cheatsheet.filter')}
+              aria-label={t('cheatsheet.filterAria')}
               className="w-full rounded-lg border border-border bg-panel-2/60 px-3 py-1.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-dim/60 focus:border-term"
             />
             {q && (
               <button
                 onClick={() => setQ('')}
-                aria-label="Clear filter"
+                aria-label={t('cheatsheet.clearFilter')}
                 className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-dim hover:text-term"
               >
                 ✕
@@ -104,13 +105,13 @@ export default function CheatsheetModal({ onClose }: { onClose: () => void }) {
             )}
           </div>
           <span className="inline-flex items-center gap-1.5 text-xs text-ink-dim">
-            <span className="inline-block h-2 w-2 rounded-full bg-term" /> playable in TmuxLegends
+            <span className="inline-block h-2 w-2 rounded-full bg-term" /> {t('cheatsheet.mastered')}
           </span>
         </div>
 
         {/* Scrollable binding list */}
         {sections.length === 0 ? (
-          <p className="px-5 py-10 text-center text-ink-dim">Nothing matches &ldquo;{q}&rdquo;.</p>
+          <p className="px-5 py-10 text-center text-ink-dim">{t('cheatsheet.noMatch', { q })}</p>
         ) : (
           <div className="grid gap-4 overflow-y-auto px-5 py-4 sm:grid-cols-2">
             {sections.map((s) => (
@@ -120,8 +121,12 @@ export default function CheatsheetModal({ onClose }: { onClose: () => void }) {
                 style={{ borderTop: '2.5px solid var(--color-term)' }}
               >
                 <div className="mb-2">
-                  <h3 className="font-terminal text-lg font-semibold text-term">{s.title}</h3>
-                  {s.blurb && <p className="text-xs text-ink-dim">{s.blurb}</p>}
+                  <h3 className="font-terminal text-lg font-semibold text-term">
+                    {t(`cheat.${s.slug}.title`, undefined, s.title)}
+                  </h3>
+                  {s.blurb && (
+                    <p className="text-xs text-ink-dim">{t(`cheat.${s.slug}.blurb`, undefined, s.blurb)}</p>
+                  )}
                 </div>
                 <div className="space-y-1.5">
                   {s.rows.map((row) => (
@@ -135,17 +140,17 @@ export default function CheatsheetModal({ onClose }: { onClose: () => void }) {
 
         {/* Download action */}
         <div className="flex flex-wrap items-center gap-2.5 border-t border-border px-5 py-3.5">
-          <span className="mr-auto text-xs text-ink-dim">Take it with you:</span>
+          <span className="mr-auto text-xs text-ink-dim">{t('cheatsheet.takeItWithYou')}</span>
           <button
             onClick={() => {
               sfx.ui()
               downloadCheatsheetPdf()
-              toast('Downloaded PDF ✓')
+              toast(t('cheatsheet.downloadedPdf'))
             }}
             className="btn-primary rounded-lg px-3.5 py-1.5 text-sm font-bold"
-            title="Download the full cheatsheet as a PDF"
+            title={t('cheatsheet.downloadPdfTitle')}
           >
-            ↓ Download PDF
+            ↓ {t('cheatsheet.downloadPdf')}
           </button>
         </div>
 
@@ -163,6 +168,7 @@ export default function CheatsheetModal({ onClose }: { onClose: () => void }) {
 /** One binding. `sim` rows are playable here, and get the lit keycap treatment
  *  VimLegends gives a mastered command. */
 function Row({ row }: { row: CheatRow }) {
+  const t = useT()
   return (
     <div className="flex items-baseline gap-2.5">
       <span
@@ -171,7 +177,7 @@ function Row({ row }: { row: CheatRow }) {
       >
         {row.keys}
       </span>
-      <span className="text-sm text-ink-dim">{row.desc}</span>
+      <span className="text-sm text-ink-dim">{t(`cheat.row.${row.tid}`, undefined, row.desc)}</span>
     </div>
   )
 }
